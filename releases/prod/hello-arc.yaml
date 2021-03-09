@@ -13,7 +13,31 @@ spec:
     image:
       repository: liorkamrat/hello-arc
       tag: latest
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/rewrite-target: /
+        # kubernetes.io/tls-acme: "true"    
+      hosts:
+        - host: null
+          paths: ["/"]
+      rules:
+      - http:
+          paths:
+          - backend:
+              serviceName: hello-arc
+              servicePort: 80
     replicaCount: 1
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 8080
     env:
       name: MESSAGE
       value: Azure Arc enabled K8s GitOps Demo!
+      service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
